@@ -218,6 +218,33 @@ button {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+.splash-credit {
+  margin-top: 26px;
+  font-size: 0.76rem;
+  color: rgba(248, 250, 252, 0.55);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.splash-credit strong {
+  color: #34D399;
+  font-weight: 800;
+}
+
+/* Creator Credit Footer */
+.app-credit-footer {
+  text-align: center;
+  padding: 12px 0 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+.app-credit-footer strong {
+  color: var(--accent-primary);
+  font-weight: 800;
+}
 .app-shell {
   max-width: 480px;
   min-height: 100dvh;
