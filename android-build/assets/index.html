@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#090D16" id="meta-theme-color" />
+  <meta name="theme-color" content="#0B0C0E" id="meta-theme-color" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="UangKu" />
@@ -16,21 +16,19 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <!-- Splash Screen / Opening Transition Mewah -->
+  <!-- Splash Screen / Opening Transition Editorial -->
   <div id="splash-screen" class="splash-screen">
     <div class="splash-content">
-      <div class="splash-logo-glow"></div>
       <div class="splash-logo-wrapper">
         <svg viewBox="0 0 512 512" width="100%" height="100%" class="splash-svg-logo" aria-label="Logo UangKu">
           <defs>
             <linearGradient id="splashBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0F172A" />
-              <stop offset="50%" stop-color="#1E293B" />
-              <stop offset="100%" stop-color="#090D16" />
+              <stop offset="0%" stop-color="#16181D" />
+              <stop offset="100%" stop-color="#0B0C0E" />
             </linearGradient>
             <linearGradient id="splashEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#34D399" />
-              <stop offset="100%" stop-color="#059669" />
+              <stop offset="0%" stop-color="#00E599" />
+              <stop offset="100%" stop-color="#00B377" />
             </linearGradient>
             <linearGradient id="splashGold" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#FDE68A" />
@@ -38,21 +36,21 @@
             </linearGradient>
           </defs>
           <rect width="512" height="512" rx="115" fill="url(#splashBg)" />
-          <circle cx="256" cy="256" r="195" fill="none" stroke="url(#splashEmerald)" stroke-width="5" opacity="0.28" />
+          <circle cx="256" cy="256" r="195" fill="none" stroke="url(#splashEmerald)" stroke-width="4" opacity="0.22" />
           <!-- Kartu Emas Atas -->
           <path d="M146 124 H346 A26 26 0 0 1 372 150 V168 H120 V150 A26 26 0 0 1 146 124 Z" fill="url(#splashGold)" />
           <!-- Badan Dompet Hijau Zamrud -->
           <rect x="110" y="152" width="292" height="208" rx="40" fill="url(#splashEmerald)" />
           <!-- Garis Grafik Naik Putih -->
-          <polyline points="154,298 206,246 246,272 302,202" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
-          <circle cx="302" cy="202" r="12" fill="#FFFFFF" />
+          <polyline points="154,298 206,246 246,272 302,202" fill="none" stroke="#0B0C0E" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="302" cy="202" r="12" fill="#0B0C0E" />
           <!-- Kancing Dompet Kanan -->
-          <rect x="318" y="226" width="96" height="60" rx="18" fill="#0F172A" />
+          <rect x="318" y="226" width="96" height="60" rx="18" fill="#16181D" />
           <circle cx="348" cy="256" r="13" fill="url(#splashGold)" />
         </svg>
       </div>
       <h1 class="splash-title">UangKu</h1>
-      <p class="splash-subtitle">Financial Simplicity &amp; Wealth</p>
+      <p class="splash-subtitle">FINANCIAL PRECISION &amp; LEDGER</p>
       <div class="splash-spinner">
         <span class="spinner-dot"></span>
       </div>
@@ -68,13 +66,12 @@
           <svg viewBox="0 0 512 512" width="100%" height="100%" class="header-svg-logo" aria-hidden="true">
             <defs>
               <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#0F172A" />
-                <stop offset="50%" stop-color="#1E293B" />
-                <stop offset="100%" stop-color="#090D16" />
+                <stop offset="0%" stop-color="#16181D" />
+                <stop offset="100%" stop-color="#0B0C0E" />
               </linearGradient>
               <linearGradient id="hdrEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#34D399" />
-                <stop offset="100%" stop-color="#059669" />
+                <stop offset="0%" stop-color="#00E599" />
+                <stop offset="100%" stop-color="#00B377" />
               </linearGradient>
               <linearGradient id="hdrGold" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#FDE68A" />
@@ -82,16 +79,16 @@
               </linearGradient>
             </defs>
             <rect width="512" height="512" rx="115" fill="url(#hdrBg)" />
-            <circle cx="256" cy="256" r="195" fill="none" stroke="url(#hdrEmerald)" stroke-width="6" opacity="0.3" />
+            <circle cx="256" cy="256" r="195" fill="none" stroke="url(#hdrEmerald)" stroke-width="5" opacity="0.25" />
             <!-- Kartu Emas Atas -->
             <path d="M146 124 H346 A26 26 0 0 1 372 150 V168 H120 V150 A26 26 0 0 1 146 124 Z" fill="url(#hdrGold)" />
             <!-- Badan Dompet Hijau Zamrud -->
             <rect x="110" y="152" width="292" height="208" rx="40" fill="url(#hdrEmerald)" />
-            <!-- Garis Grafik Naik Putih -->
-            <polyline points="154,298 206,246 246,272 302,202" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" />
-            <circle cx="302" cy="202" r="14" fill="#FFFFFF" />
+            <!-- Garis Grafik Naik -->
+            <polyline points="154,298 206,246 246,272 302,202" fill="none" stroke="#0B0C0E" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="302" cy="202" r="14" fill="#0B0C0E" />
             <!-- Kancing Dompet Kanan -->
-            <rect x="318" y="226" width="96" height="60" rx="18" fill="#0F172A" />
+            <rect x="318" y="226" width="96" height="60" rx="18" fill="#16181D" />
             <circle cx="348" cy="256" r="14" fill="url(#hdrGold)" />
           </svg>
         </div>
@@ -129,9 +126,8 @@
 
     <!-- Main Scrollable Content -->
     <main class="app-content">
-      <!-- Premium Hero Balance Card -->
+      <!-- Hero Balance Card -->
       <section class="balance-card" aria-label="Ringkasan Saldo">
-        <div class="balance-card-glow"></div>
         <div class="balance-top">
           <div>
             <p class="balance-label">Total Saldo Saat Ini</p>
@@ -316,17 +312,12 @@
           </button>
         </div>
       </section>
-
-      <!-- Creator Credit Footer -->
-      <footer class="app-credit-footer" aria-label="Credit Pembuat Aplikasi">
-        <span>UangKu • Created by <strong>MasPur</strong></span>
-      </footer>
     </main>
 
     <!-- Bottom Action Bar with Floating Add Button -->
     <div class="bottom-bar">
       <button type="button" id="btn-add-tx" class="fab-primary" aria-label="Catat Transaksi Baru">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>

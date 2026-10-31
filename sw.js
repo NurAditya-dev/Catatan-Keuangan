@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uangku-offline-v5';
+const CACHE_NAME = 'uangku-offline-v6';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

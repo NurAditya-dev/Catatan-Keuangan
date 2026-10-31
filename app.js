@@ -152,7 +152,7 @@
     localStorage.setItem(THEME_KEY, theme);
     const metaTheme = document.getElementById('meta-theme-color');
     if (metaTheme) {
-      metaTheme.setAttribute('content', theme === 'dark' ? '#090D16' : '#F4F6F9');
+      metaTheme.setAttribute('content', theme === 'dark' ? '#0B0C0E' : '#F8F8F6');
     }
   }
 
@@ -407,8 +407,8 @@
         return `
           <g class="chart-group ${isSelected ? 'selected' : ''}" data-idx="${idx}">
             <rect class="bar-hit-area" x="${centerX - slotWidth * 0.42}" y="${padTop - 4}" width="${slotWidth * 0.84}" height="${plotHeight + 8}" />
-            <rect class="bar-income" x="${centerX - barWidth - barGap / 2}" y="${inY}" width="${barWidth}" height="${inHeight}" rx="${barWidth / 2}" opacity="${b.income > 0 ? 1 : 0.22}" />
-            <rect class="bar-expense" x="${centerX + barGap / 2}" y="${outY}" width="${barWidth}" height="${outHeight}" rx="${barWidth / 2}" opacity="${b.expense > 0 ? 1 : 0.22}" />
+            <rect class="bar-income" x="${centerX - barWidth - barGap / 2}" y="${inY}" width="${barWidth}" height="${inHeight}" rx="2.5" opacity="${b.income > 0 ? 1 : 0.2}" />
+            <rect class="bar-expense" x="${centerX + barGap / 2}" y="${outY}" width="${barWidth}" height="${outHeight}" rx="2.5" opacity="${b.expense > 0 ? 1 : 0.2}" />
             <text x="${centerX}" y="${svgHeight - 6}" text-anchor="middle" class="chart-axis-text">${b.shortLabel}</text>
           </g>
         `;
@@ -488,31 +488,65 @@
     });
 
     const totalFiltered = filtered.length;
-    const totalPages = Math.max(1, Math.ceil(totalFiltered / state.pageSize));
-    if (state.currentPage > totalPages) state.currentPage = totalPages;
-    if (state.currentPage < 1) state.currentPage = 1;
 
     countLabel.textContent = query
       ? `Ditemukan ${totalFiltered} catatan untuk "${state.searchQuery}"`
       : `${totalFiltered} catatan tersimpan offline`;
 
-    // 4. Potong data berdasarkan halaman aktif (Pagination)
-    const startIndex = (state.currentPage - 1) * state.pageSize;
-    const pagedItems = filtered.slice(startIndex, startIndex + state.pageSize);
+    // 4. Kelompokkan per tanggal TERLEBIH DAHULU agar transaksi di hari yang sama
+    //    tidak pernah terpisah/terpotong saat berpindah halaman (Next Page)
+    const allGroupsMap = new Map();
+    for (const tx of filtered) {
+      if (!allGroupsMap.has(tx.date)) {
+        allGroupsMap.set(tx.date, []);
+      }
+      allGroupsMap.get(tx.date).push(tx);
+    }
+
+    const allDateGroups = [];
+    for (const [dateStr, items] of allGroupsMap.entries()) {
+      allDateGroups.push({ dateStr, items });
+    }
+
+    // Susun halaman berdasarkan grup hari utuh (target maks state.pageSize item per halaman,
+    // namun 1 hari penuh selalu dijaga utuh dalam halaman yang sama)
+    const pages = [];
+    let currentPageGroups = [];
+    let currentPageCount = 0;
+
+    for (const group of allDateGroups) {
+      if (currentPageGroups.length > 0 && currentPageCount + group.items.length > state.pageSize) {
+        pages.push(currentPageGroups);
+        currentPageGroups = [group];
+        currentPageCount = group.items.length;
+      } else {
+        currentPageGroups.push(group);
+        currentPageCount += group.items.length;
+      }
+    }
+    if (currentPageGroups.length > 0) {
+      pages.push(currentPageGroups);
+    }
+
+    const totalPages = Math.max(1, pages.length);
+    if (state.currentPage > totalPages) state.currentPage = totalPages;
+    if (state.currentPage < 1) state.currentPage = 1;
+
+    const currentGroups = pages[state.currentPage - 1] || [];
 
     // Update kontrol pagination
     if (totalPages > 1) {
       paginationEl.classList.remove('hidden');
-      pageIndicatorEl.textContent = `Hal ${state.currentPage} dari ${totalPages}`;
+      pageIndicatorEl.textContent = `Hal ${state.currentPage} / ${totalPages}`;
       btnPrevPage.disabled = state.currentPage <= 1;
       btnNextPage.disabled = state.currentPage >= totalPages;
     } else {
       paginationEl.classList.add('hidden');
     }
 
-    if (pagedItems.length === 0) {
+    if (currentGroups.length === 0) {
       listEl.innerHTML = `
-        <div class="empty-state">
+        <div class="empty-state animate-enter-tactile">
           <div class="empty-icon">${query ? '🔍' : '📒'}</div>
           <h4>${query ? 'Catatan Tidak Ditemukan' : 'Belum Ada Catatan'}</h4>
           <p>${query ? 'Coba gunakan kata kunci pencarian yang lain.' : 'Ketuk tombol <strong>Catat Keuangan</strong> di bawah untuk mulai mencatat.'}</p>
@@ -521,20 +555,15 @@
       return;
     }
 
-    // Kelompokkan per tanggal dalam halaman ini
-    const groups = new Map();
-    for (const tx of pagedItems) {
-      if (!groups.has(tx.date)) groups.set(tx.date, []);
-      groups.get(tx.date).push(tx);
-    }
-
     const todayStr = toLocalISOString(new Date());
     const yesterdayDate = new Date();
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
     const yesterdayStr = toLocalISOString(yesterdayDate);
 
     let html = '';
-    for (const [dateStr, items] of groups.entries()) {
+    let staggerIdx = 0;
+
+    for (const { dateStr, items } of currentGroups) {
       const parsedD = parseLocalDate(dateStr);
       let dayName = parsedD.toLocaleDateString('id-ID', { weekday: 'long' });
       let fullDateFormatted = parsedD.toLocaleDateString('id-ID', {
@@ -556,9 +585,9 @@
       );
 
       html += `
-        <div class="date-group-header">
+        <div class="date-group-header animate-enter-tactile" style="--stagger-idx: ${staggerIdx++}">
           <span>${headerLabel}</span>
-          <span>${state.hideBalance ? '' : (dayTotal >= 0 ? '+' : '') + formatRupiah(dayTotal)}</span>
+          <span class="date-group-total">${state.hideBalance ? '' : (dayTotal >= 0 ? '+' : '') + formatRupiah(dayTotal)}</span>
         </div>
       `;
 
@@ -572,7 +601,7 @@
           : formatRupiah(tx.amount, true, tx.type);
 
         html += `
-          <article class="tx-item ${tx.type}" data-id="${tx.id}" role="button" tabindex="0" aria-label="Edit ${title}">
+          <article class="tx-item ${tx.type} animate-enter-tactile" style="--stagger-idx: ${staggerIdx++}" data-id="${tx.id}" role="button" tabindex="0" aria-label="Edit ${title}">
             <div class="tx-left">
               <div class="tx-cat-icon" aria-hidden="true">${cat.emoji}</div>
               <div class="tx-details">
@@ -583,7 +612,7 @@
             <div class="tx-right">
               <div class="tx-amount ${tx.type}">${amountDisplay}</div>
               <button type="button" class="tx-delete-inline-btn" data-delete-id="${tx.id}" title="Hapus catatan ini" aria-label="Hapus catatan ${title}">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"></polyline>
                   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                 </svg>
