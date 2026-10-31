@@ -1,10 +1,10 @@
 /**
- * UangKu — Aplikasi Pencatat Keuangan Pribadi (PWA Offline)
+ * UangKu — Aplikasi Android Pencatat Keuangan Pribadi (Standalone Offline App)
  * Fitur Utama:
  * 1. Pencatatan Pemasukan & Pengeluaran Cepat
  * 2. Grafik Interaktif: Harian (7 Hari), Mingguan (4 Minggu), Bulanan (6 Bulan)
  * 3. Tema Clean Minimalist Light / Dark
- * 4. Penyimpanan Lokal Permanen (100% Offline via localStorage + Service Worker)
+ * 4. Penyimpanan Lokal Permanen (100% Offline via localStorage)
  */
 
 (function () {
@@ -47,8 +47,7 @@
     hideBalance: false,
     modalType: 'expense',
     selectedCategory: 'makan',
-    pendingDeleteTxId: null,
-    deferredInstallPrompt: null
+    pendingDeleteTxId: null
   };
 
   // Helper Tanggal Lokal (YYYY-MM-DD)
@@ -1013,27 +1012,8 @@
     }
   }
 
-  // Registrasi Service Worker untuk 100% Offline Support
-  function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      // Registrasi diizinkan di localhost, HTTPS, atau alamat IP LAN (misal http://192.168.x.x)
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js', { scope: './' })
-          .then((reg) => {
-            console.log('Service Worker UangKu berhasil aktif untuk akses offline!', reg.scope);
-            // Cek pembaruan cache
-            reg.update();
-          })
-          .catch((err) => {
-            console.warn('Info Service Worker:', err);
-          });
-      });
-    }
-  }
-
-  // Bootstrap App
+  // Bootstrap Native Android App
   loadData();
   initEvents();
   renderAll();
-  registerServiceWorker();
 })();

@@ -124,6 +124,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 240ms var(--ease-out-quint), color 240ms var(--ease-out-quint);
   overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 button,
@@ -133,6 +136,11 @@ input {
   border: none;
   background: none;
   outline: none;
+}
+
+input {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 button {

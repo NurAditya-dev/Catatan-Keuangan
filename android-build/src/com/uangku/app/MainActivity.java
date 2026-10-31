@@ -15,6 +15,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         myWebView = new WebView(this);
+        myWebView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+        myWebView.setVerticalScrollBarEnabled(false);
+        myWebView.setHorizontalScrollBarEnabled(false);
         setContentView(myWebView);
 
         WebSettings webSettings = myWebView.getSettings();
